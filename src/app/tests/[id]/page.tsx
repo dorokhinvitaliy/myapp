@@ -6,6 +6,8 @@ import { act, useReducer, useState } from "react";
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { parse } from "path";
 
+import SelectBox from "@/app/ui/tests/SelectBox";
+
 const tasks = [
     {
         number: 1,
@@ -86,12 +88,12 @@ const initialAnswer = [
     },
     {
         number: 5,
-        content: { lang: 'js', code: "function biba() {}", messages: [{id: 1, type: 'info', text: '13 / 28 tests passed'},{id: 2, type: 'error', text: 'TEST 14 Compiling Error'},]},
+        content: { lang: 'js', code: "function biba() {}", messages: [{ id: 1, type: 'info', text: '13 / 28 tests passed' }, { id: 2, type: 'error', text: 'TEST 14 Compiling Error' },] },
         status: 'pending'
     },
     {
         number: 6,
-        content: { lang: 'python', code: "def boba(): \n", messages: []},
+        content: { lang: 'python', code: "def boba(): \n", messages: [] },
         status: 'pending'
     }
 ];
@@ -100,7 +102,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
     const [answer, dispatch] = useReducer(answerReducer, initialAnswer);
     const [answerSaved, dispatchSaved] = useReducer(answerSavedReducer, structuredClone(initialAnswer));
-    const [current_task, current_task_update] = useState(tasks.find(o => o.number == 1));
+    const [current_task, current_task_update] = useState(tasks[0]);
     const status_vc = { "correct": "Верно", "incorrect": "Неверно", "partly": "Частично верно", "waiting": "Проверяется..." }
 
     /* function findAnswer(number: Number){
@@ -120,11 +122,28 @@ export default function Page({ params }: { params: { id: string } }) {
         { id: 'java', text: 'Java' }
     ];
 
-    const [lang, updateLang] = useState('js');
+    /* const [lang, updateLang] = useState('js'); */
 
     const [editorFocused, updateEditorFocused] = useState(false);
 
-    function compareWithPrev(a, b) {
+    function findTask(num: Number) {
+        const result = (tasks.find(o => o.number == num));
+        if (result == undefined) {
+            return {
+                number: 0,
+                title: "--",
+                type: 'code',
+                html: {
+                    __html: "<p>Not found.</p>"
+                }
+            };
+        } else {
+            return result;
+        }
+    }
+
+
+    function compareWithPrev(a: { toString: () => any; code: any; lang: any; }, b: { toString: () => string; code: any; lang: any; }) {
         if (Array.isArray(a)) {
             return a.toString() == b.toString()
         } else if (typeof a == "object") {
@@ -164,11 +183,11 @@ export default function Page({ params }: { params: { id: string } }) {
         });
     }
 
-    
+
 
     function updateLabelChecked(id: Number, state: Boolean) {
         dispatch({
-            number: current_task.number,
+            number: current_task?.number,
             taskType: "check",
             id: id,
             state: state
@@ -179,7 +198,7 @@ export default function Page({ params }: { params: { id: string } }) {
     return <div className={styles.workspace}>
         <div className={styles.tasksBar}>
             {tasks.map(task => (
-                <div onClick={e => { current_task_update(tasks.find(o => o.number == task.number)) }} key={task.number} className={parseClass(
+                <div onClick={e => { current_task_update(findTask(task.number)) }} key={task.number} className={parseClass(
                     [
                         styles.tasksBar_cell,
                         [styles.tasksBar_cell_valid, (answer.find((a) => (a.number == task.number))).status == "correct"],
@@ -195,7 +214,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
         <div className={styles.taskArea}>
             <div className={styles.taskArea_header}>
-                <div className={styles.taskArea_title}>{current_task.title}</div>
+                <div className={styles.taskArea_title}>{current_task?.title}</div>
                 <div className={
                     parseClass([
                         styles.taskArea_status,
@@ -204,7 +223,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         [styles.taskArea_status_partly, (answer.find((a) => a.number == current_task.number).status == "partly")],
                         [styles.taskArea_status_waiting, (answer.find((a) => a.number == current_task.number).status == "waiting")],
                     ])
-                }> {status_vc[(answer.find((a) => a.number == current_task.number).status)]} </div>
+                }> {status_vc[(answer.find((a) => a.number == current_task?.number).status)]} </div>
             </div>
 
 
@@ -215,14 +234,14 @@ export default function Page({ params }: { params: { id: string } }) {
 
             {current_task.type == "input" && (
                 <div className={styles.answerArea}>
-                    <input key={current_task.number} defaultValue={(answer.find((a) => a.number == current_task?.number)).content} type="text" onInput={(e) => updateAnswerInput(e.target.value)} className={styles.answerArea_input + ' ' + styles.answerArea_input_empty} />
+                    <input key={current_task.number} defaultValue={(answer.find((a) => a.number == current_task?.number)).content} type="text" onInput={(e) => updateAnswerInput((e.target as HTMLInputElement).value)} className={styles.answerArea_input + ' ' + styles.answerArea_input_empty} />
                     <div className={styles.answerArea_placeholder}>Запишите ответ</div>
                 </div>
             )}
 
-            {current_task.type == "check" && (
+            {current_task?.type == "check" && (
                 <div className={styles.labelsArea}>
-                    {current_task?.labels.map((label) =>
+                    {current_task?.labels?.map((label) =>
                         <label key={"label/" + current_task.number + "/" + label.id} className={styles.answer_label}>
                             <input key={current_task.number + "/" + label.id} type="checkbox" onChange={(e) => { updateLabelChecked(label.id, e.target.checked) }} defaultChecked={answer.find((o) => o.number == current_task.number).content?.indexOf(label.id) != -1} className={styles.answer_label_check} />
                             <div className={styles.answer_label_text}>{label.text}</div>
@@ -233,15 +252,15 @@ export default function Page({ params }: { params: { id: string } }) {
 
 
 
-            {current_task.type == "code" && (
+            {current_task?.type == "code" && (
                 <>
                     <div className={parseClass([styles.codeArea, [styles.codeArea_focused, editorFocused]])}>
                         <div className={styles.codeArea_placeholder}>Ваш код</div>
                         <div className={styles.codeArea_rightMenu}>
-                            <SelectBox changeChecked={ updateAnswerCodeLang } checked={ (answer.find((a) => a.number == current_task?.number)).content.lang } labels={code_langs} />
+                            <SelectBox changeChecked={updateAnswerCodeLang} checked={(answer.find((a) => a.number == current_task?.number)).content.lang} labels={code_langs} />
                             {
-                                (answer.find((a)=>a.number==current_task?.number)).content.messages.map((msg)=>(
-                                    <div key={ msg.id } className={parseClass([styles.codeArea_rightMenu_message, [styles.codeArea_rightMenu_message_red, msg.type=='error']])}>{ msg.text }</div>
+                                (answer.find((a) => a.number == current_task?.number)).content.messages.map((msg) => (
+                                    <div key={msg.id} className={parseClass([styles.codeArea_rightMenu_message, [styles.codeArea_rightMenu_message_red, msg.type == 'error']])}>{msg.text}</div>
                                 ))
                             }
                         </div>
@@ -252,7 +271,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                 styles.codeArea_ws
                             ])}
                             value={(answer.find((a) => a.number == current_task?.number)).content.code}
-                            language={ (answer.find((a) => a.number == current_task?.number)).content.lang }
+                            language={(answer.find((a) => a.number == current_task?.number)).content.lang}
                             placeholder={`Please enter ${(answer.find((a) => a.number == current_task?.number)).content.lang} code.`}
                             onChange={(e) => updateAnswerCode(e.target.value)}
                             padding={15}
@@ -269,10 +288,11 @@ export default function Page({ params }: { params: { id: string } }) {
             )}
 
 
-            {current_task.type != "code" && (<div className={styles.taskArea_buttons}>
+
+            {current_task?.type != "code" && (<div className={styles.taskArea_buttons}>
                 <>
                     <button className={parseClass([styles.button, [styles.button_disabled, compareWithPrev((answer[current_task?.number - 1].content), (answerSaved[current_task?.number - 1].content))]])} onClick={(e) => updateTask(current_task?.number)}>{(compareWithPrev(answer[current_task?.number - 1].content, answerSaved[current_task?.number - 1].content) ? "Сохранено" : "Сохранить")}</button>
-                    <button className={parseClass([styles.button, styles.button_secondary])}>{current_task?.status == 'pending' ? 'Пропустить' : 'Далее'}</button>
+                    <button className={parseClass([styles.button, styles.button_secondary])}>Далее</button>
                 </>
 
             </div>)}
@@ -352,8 +372,8 @@ function modifyList(list: Number[], element: Number, status: Boolean) {
     return list;
 }
 
-export function SelectBox({ labels, checked, changeChecked }) {
-
+/* export function SelectBox({ labels, checked, changeChecked }) {
+ 
     const [opened, upd_opened] = useState(false);
     return <div className={styles.selectBox + " " + (opened ? styles.selectBox_opened : "")}>
         <div className={styles.selectBox_selectArea} onClick={() => upd_opened(!opened)}>{(labels.find((o) => (o.id == checked))).text}</div>
@@ -362,7 +382,7 @@ export function SelectBox({ labels, checked, changeChecked }) {
                 <div onClick={() => { changeChecked(label.id); upd_opened(!opened); }} className={styles.selectOption + " " + (label.id == checked && " " + styles.selectOptionChecked)} key={label.id}>{label.text}</div>
             ))}
         </div></div>;
-}
+} */
 
 function parseClass(cls) {
     var result = "";

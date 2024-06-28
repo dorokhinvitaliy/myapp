@@ -180,7 +180,9 @@
 }
 
 .tasksBar_cell_finish {
-    /*  */
+    
+    background: red;
+
 }
 
 

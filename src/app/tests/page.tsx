@@ -7,26 +7,32 @@ export default function Page() {
     const [vall, setVal] = useState('')
     const tests = [
         {
+            id: 1,
             title: 'Тест на котана',
             progress: 78, btn: true
         },
         {
+            id: 2,
             title: 'Тест на собакена',
             progress: 100, btn: false
         },
         {
+            id: 3,
             title: 'Тест на котика',
             progress: 85, btn: true
         },
         {
+            id: 4,
             title: 'Тест на котана',
             progress: 89, btn: true
         },
         {
+            id: 5,
             title: 'Тест на собакена',
             progress: 100, btn: false
         },
         {
+            id: 6,
             title: 'Тест на котика',
             progress: 85, btn: true
         }
@@ -52,7 +58,7 @@ export default function Page() {
         <div className={styles.text}> Пройденные тесты </div>
         <div className={styles.testBlocks}>
             {tests.map(test =>
-                <div className={styles.testBlock}>
+                <div key={"tests/test/"+test.id} className={styles.testBlock}>
                     <div className={styles.testBlock_united}>
                         <div className={styles.testBlock_icon}>
                             {(test.progress == 100) ? (
