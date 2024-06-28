@@ -1,7 +1,18 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
+import { Comfortaa } from "next/font/google";
 import "./globals.css";
 
+import Image from "next/image";
+
+const montserrat = Montserrat({
+  subsets: ["latin"]
+});
+
+const comfortaa = Comfortaa({
+  subsets: ["latin"]
+});
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -11,12 +22,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={montserrat.className}>
+        <div className="header">
+          <Image src={`/full_v1.png`}  className={ "header-logo " } width={120} height={40} />
+        </div>
+        {children}
+      </body>
     </html>
   );
 }
