@@ -2,7 +2,7 @@ import React from "react";
 import { CloseOutlineIcon } from "../icons";
 import styles from "./modal.module.css"
 import {parseClass} from "@/app/utils/parseClass";
-export default function Modal({opened, changeOpened, options, children}:{opened:Boolean, changeOpened: any, options: {header: Boolean, title: String}, children: React.ReactNode}) {
+export default function Modal({opened, changeOpened, options, children}:{opened:Boolean, changeOpened: any, options: {header: Boolean, title?: String}, children: React.ReactNode}) {
     return <div className={parseClass([styles.modalArea, [styles.modalArea_closed, !opened]])}>
         <div className={styles.modalBackdrop} onClick={()=>(changeOpened(!opened))}>
 

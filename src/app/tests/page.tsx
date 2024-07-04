@@ -76,7 +76,7 @@ export default function Page() {
     </div>;
 }
 
-export function ProgressBar({ progress }: { progress: Number }) {
+function ProgressBar({ progress }: { progress: Number }) {
     if (progress == -1) {
         return (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 172.99 172.99" width="80" height="80">
@@ -97,7 +97,7 @@ export function ProgressBar({ progress }: { progress: Number }) {
     } else {
         return (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="80" height="80">
-                <circle className={styles.circle} style={{ fill: "transparent", strokeWidth: 15, stroke: "#0ABA07", strokeDasharray: "calc(2*pi*50)", strokeDashoffset: `calc(2*pi*50*${(100 - progress) / 100})` }} cx="90" cy="90" r="50"></circle>
+                <circle className={styles.circle} style={{ fill: "transparent", strokeWidth: 15, stroke: "#0ABA07", strokeDasharray: "calc(2*pi*50)", strokeDashoffset: `calc(2*pi*50*${(100 - +progress) / 100})` }} cx="90" cy="90" r="50"></circle>
                 <circle style={{ fill: "transparent", strokeWidth: 15, stroke: "rgba(10, 186, 7, 0.07)" }} cx="90" cy="90" r="50"></circle>
             </svg>
         );
