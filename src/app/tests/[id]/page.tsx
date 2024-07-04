@@ -7,6 +7,9 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 import { parse } from "path";
 
 import SelectBox from "@/app/ui/tests/SelectBox";
+import {parseClass} from "@/app/utils/parseClass";
+import { ArrowIcon } from "@/app/ui/icons";
+import Modal from "@/app/ui/tests/Modal";
 
 const tasks = [
     {
@@ -103,6 +106,8 @@ export default function Page({ params }: { params: { id: string } }) {
     const [answer, dispatch] = useReducer(answerReducer, initialAnswer);
     const [answerSaved, dispatchSaved] = useReducer(answerSavedReducer, structuredClone(initialAnswer));
     const [current_task, current_task_update] = useState(tasks[0]);
+    const [modalState,modalStateUpdate] = useState(false);
+    const [modalNumsState,modalNumsStateUpdate] = useState(false);
     const status_vc = { "correct": "Верно", "incorrect": "Неверно", "partly": "Частично верно", "waiting": "Проверяется..." }
 
     /* function findAnswer(number: Number){
@@ -196,6 +201,29 @@ export default function Page({ params }: { params: { id: string } }) {
     }
 
     return <div className={styles.workspace}>
+        <Modal opened={modalState} changeOpened={modalStateUpdate} options={{header:true, title: "Модальное окно"}}>
+            <p style={{width: "100%", textAlign: "center", display: "block", marginBottom: "2rem"}}>Вы уверены, что хотите завершить тест?</p>
+            <div className={styles.buttons}>
+                <button className={styles.button}>Завершить</button>
+                <button onClick={()=>(modalStateUpdate(false))} className={parseClass([styles.button, styles.button_secondary])}>Продолжить</button>
+            </div>
+        </Modal>
+        <Modal opened={modalNumsState} changeOpened={modalNumsStateUpdate} options={{header:false}}>
+        <div className={styles.tasksModalBar}>
+        {tasks.map(task => (
+                <div onClick={e => { current_task_update(findTask(task.number)) }} key={task.number} className={parseClass(
+                    [
+                        styles.tasksBar_cell,
+                        [styles.tasksBar_cell_valid, (answer.find((a) => (a.number == task.number))).status == "correct"],
+                        [styles.tasksBar_cell_invalid, (answer.find((a) => (a.number == task.number))).status == "incorrect"],
+                        [styles.tasksBar_cell_partly, (answer.find((a) => (a.number == task.number))).status == "partly"],
+                        [styles.tasksBar_cell_waiting, (answer.find((a) => (a.number == task.number))).status == "waiting"],
+                        [styles.tasksBar_cell_active, task.number == current_task.number],
+
+                    ])}>{task.number}</div>
+            ))}
+            </div>
+        </Modal>
         <div className={styles.tasksBar}>
             {tasks.map(task => (
                 <div onClick={e => { current_task_update(findTask(task.number)) }} key={task.number} className={parseClass(
@@ -209,7 +237,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
                     ])}>{task.number}</div>
             ))}
-            <div className={parseClass([styles.tasksBar_cell, styles.tasksBar_cell_finish])}></div>
+            <div onClick={()=>(modalStateUpdate(true))} className={parseClass([styles.tasksBar_cell, styles.tasksBar_cell_finish])}><ArrowIcon width="20px" height="20px" /></div>
         </div>
 
         <div className={styles.taskArea}>
@@ -291,8 +319,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
             {current_task?.type != "code" && (<div className={styles.taskArea_buttons}>
                 <>
-                    <button className={parseClass([styles.button, [styles.button_disabled, compareWithPrev((answer[current_task?.number - 1].content), (answerSaved[current_task?.number - 1].content))]])} onClick={(e) => updateTask(current_task?.number)}>{(compareWithPrev(answer[current_task?.number - 1].content, answerSaved[current_task?.number - 1].content) ? "Сохранено" : "Сохранить")}</button>
-                    <button className={parseClass([styles.button, styles.button_secondary])}>Далее</button>
+                    <button key={"test_button_"+current_task.number} className={parseClass([styles.button, [styles.button_disabled, compareWithPrev((answer[current_task?.number - 1].content), (answerSaved[current_task?.number - 1].content))]])} onClick={(e) => updateTask(current_task?.number)}>{(compareWithPrev(answer[current_task?.number - 1].content, answerSaved[current_task?.number - 1].content) ? "Сохранено" : "Сохранить")}</button>
+                    <button key={"test_button_sec_"+current_task.number}  onClick={ () => (current_task_update(findTask(current_task.number+1))) } className={parseClass([styles.button, styles.button_secondary])}>Далее</button>
                 </>
 
             </div>)}
@@ -384,7 +412,7 @@ function modifyList(list: Number[], element: Number, status: Boolean) {
         </div></div>;
 } */
 
-function parseClass(cls) {
+/* function parseClass(cls) {
     var result = "";
     for (var i = 0; i < cls.length; i += 1) {
         if (Array.isArray(cls[i])) {
@@ -396,4 +424,4 @@ function parseClass(cls) {
         }
     }
     return result;
-}
+} */

@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <div className="header">
-          <Image alt={"biba"} src={`/full_v2.png`}  className={ "header-logo " } width={120} height={40} />
+          <Image alt={"biba"} src={`/full_v4.png`}  className={ "header-logo " } width={120} height={40} />
         </div>
         {children}
       </body>

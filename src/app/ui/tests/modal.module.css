@@ -1,0 +1,74 @@
+.modalArea {
+    z-index: 10000;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .3s ease;
+}
+
+.modalArea_closed {
+    user-select: none;
+    pointer-events: none;
+}
+
+.modalBackdrop {
+    background-color: rgba(0, 0, 0, 0.101);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all .2s ease;
+}
+
+.modalArea_closed .modalBackdrop {
+    opacity: 0;
+}
+
+.modalArea_closed .modalBlock {
+    opacity: 0;
+}
+
+.modalBlock {
+    width: 500px;
+    z-index: 10001;
+    background-color: #fff;
+    border-radius: 1rem;
+    transform: scale(1);
+    transition: all .3s ease;
+}
+
+.modalArea_closed .modalBlock {
+    transform: scale(0);
+}
+
+.modalBlock_header {
+    padding: 2rem 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalBlock_header_title {
+    font-weight: 500;
+}
+
+.modalBlock_header_close {
+    color: rgba(0, 0, 0, 0.323);
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.modalBlock_body {
+    padding: 2rem;
+}
+

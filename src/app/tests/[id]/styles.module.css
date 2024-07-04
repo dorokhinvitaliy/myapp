@@ -19,6 +19,15 @@
     padding: 1rem;
 }
 
+.tasksModalBar {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tasksModalBar .tasksBar_cell {
+    margin: .3rem;
+}
+
 .tasksBar_cell {
     position: relative;
     display: flex;
@@ -181,7 +190,17 @@
 
 .tasksBar_cell_finish {
     
-    background: red;
+    padding: 0;
+    color: #fff;
+    background-color: #0D5FFF;
+
+}
+
+.tasksBar_cell_finish:hover {
+    
+    padding: 0;
+    color: #fff;
+    background-color: #0055ffad;
 
 }
 
@@ -239,7 +258,11 @@
 }
 
 
-
+.buttons {
+    display: flex;
+    width: fit-content;
+    margin: 1rem auto 0;
+}
 
 .button {
     background-color: #0D5FFF;

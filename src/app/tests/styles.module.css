@@ -1,5 +1,5 @@
 .workspace {
-    max-width: 800px;
+    max-width: 900px;
     margin: 3rem auto;
 }
 
@@ -43,6 +43,23 @@
     z-index: 100;
 }
 
+.searchArea_message {
+    position: absolute;
+    bottom: -45px;
+    background-color: #ff4d0022;
+    color: #FF4C00;
+    padding: .5rem;
+    border-radius: .3rem;
+    animation: appear 1s ease;
+}
+
+@keyframes appear {
+    0% {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+}
+
 .searchArea_input {
     background-color: rgb(242,242,242);
     border-radius: 1rem;
@@ -51,10 +68,6 @@
     width: 100%;
     border: 2px solid rgb(214, 214, 214);
     transition: .5s ease;
-}
-
-.searchArea_input_empty {
-    /* background-color: red; */
 }
 
 .searchArea_placeholder:before {
@@ -98,6 +111,12 @@
     padding: .5rem 1rem;
     color: #fff;
     border-radius: .5rem;
+}
+
+.button.button_disabled {
+    background-color: #9c9c9c54;
+    color: #9c9c9c;
+    pointer-events: none;
 }
 
 .searchArea_button {
@@ -145,7 +164,7 @@
     justify-content: space-between;
 }
 
-@media screen and (max-width:758px) {
+@media screen and (max-width:900px) {
     .testBlock {
         width: 100%;
     }
@@ -176,3 +195,56 @@
     font-size: 14px;
 }
 /* Tests Area End */
+
+.circle {
+    animation: dash 2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+@keyframes dash {
+    0% {
+        stroke-dashoffset: calc(2*pi*50);
+    }
+}
+
+
+.cls {
+    animation: circleAppear 1s ease backwards;
+    transform-origin: center;
+
+}
+
+@keyframes circleAppear {
+    0% {
+        opacity: 0;
+        transform: scale(.9); 
+    }
+}
+
+.cls1 {
+    animation-delay: 0!important;
+
+}
+
+.cls2 {
+    animation-delay: .5s!important;
+
+}
+
+.cls3 {
+    animation-delay: 1s!important;
+
+}
+
+.pls {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 0;
+    animation: pathAppear .5s ease backwards 1.5s;
+
+}
+
+@keyframes pathAppear {
+    0% {
+        opacity: 0;
+        stroke-dashoffset: 50;
+        
+    }
+}

@@ -1,0 +1,11 @@
+.workspace {
+    max-width: 900px;
+    margin: 3rem auto;
+}
+
+@media screen and (max-width:1000px) {
+    .workspace {
+        max-width: calc(100% - 2rem);
+        margin: 3rem auto;
+    }
+}
