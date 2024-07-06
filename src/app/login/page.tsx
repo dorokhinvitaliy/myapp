@@ -1,33 +1,38 @@
 "use client";
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import Button, { ButtonGroup } from "../ui/components/button";
 
 import { Input, SelectBox, InputGroup } from "../ui/components/input"
+import { ParseClass } from "../utils/parseClass";
 import styles from "./styles.module.css"
 
-const formData = { name: "Vanya", surname: "Petrov", age: 10, option: null }
+const formData = { name: "", surname: "Petrov", age: 10, option: null }
 const options = [{ id: 1, label: "First" }, { id: 2, label: "Second" }, { id: 3, label: "Third" }];
 export default function Page() {
     const [data, updateData] = useState(formData);
     return <div className={styles.workspace}>
         <InputGroup>
-            <Input value={data.name} onchange={(val) => updateData({ ...data, name: val })} width="100%" placeholder={'Name'} />
-            <Input value={data.surname} onchange={(val) => updateData({ ...data, surname: val })} width="100%" placeholder={'Surname'} />
-            <Input value={data.age} dataType="number" onchange={(val) => updateData({ ...data, age: val })} width="100%" placeholder={'Age'} />
+            <Input value={data.name} onChange={(e) => updateData({ ...data, name: e.target.value })} placeholder={'Name'} />
+            <Input value={data.surname} onChange={(e) => updateData({ ...data, surname: e.target.value })} placeholder={'Surname'} />
+            <Input value={data.age} dataType="number" onChange={(e) => updateData({ ...data, age: e.target.value })} placeholder={'Age'} />
         </InputGroup>
 
         <InputGroup>
-            <Input pattern={"N-N-N-N"} placeholder={'SpecialCode'} />
-            <SelectBox value={data.option} changeValue={(val) => updateData({ ...data, option: val })} placeholder={"Выберите что-нибудь"} options={options}></SelectBox>
-            <Button>Далее</Button>
+            
+            <SelectBox value={data.option} onChange={(val) => updateData({ ...data, option: val })} placeholder={"Выберите что-нибудь"} options={options}></SelectBox>
+            <Button large>Далее</Button>
         </InputGroup>
         <ButtonGroup>
-            <Button>Test</Button>
-            <Button secondary>Test 2</Button>
-            <Button disabled>Test 3</Button>
+            <Button onClick={(e)=>console.log(e.target)}>Test</Button>
+            <Button secondary className={ ParseClass({
+                "baby": true,
+                "testy": true,
+                "d": false
+            }) }>Test 2</Button>
+            <Button disabled={ (data.name + data.surname).length > 20 }>Test 3</Button>
         </ButtonGroup>
 
 
-        {data.name} {data.surname}
+        {data.name} {data.surname} { data.option }
     </div>
 }

@@ -7,9 +7,10 @@ import CodeEditor from '@uiw/react-textarea-code-editor';
 import { parse } from "path";
 
 import SelectBox from "@/app/ui/tests/SelectBox";
-import {parseClass} from "@/app/utils/parseClass";
+import { parseClass } from "@/app/utils/parseClass";
 import { ArrowIcon } from "@/app/ui/icons";
 import Modal from "@/app/ui/tests/Modal";
+import { Input } from "@/app/ui/components/input";
 
 const tasks = [
     {
@@ -106,8 +107,8 @@ export default function Page({ params }: { params: { id: string } }) {
     const [answer, dispatch] = useReducer(answerReducer, initialAnswer);
     const [answerSaved, dispatchSaved] = useReducer(answerSavedReducer, structuredClone(initialAnswer));
     const [current_task, current_task_update] = useState(tasks[0]);
-    const [modalState,modalStateUpdate] = useState(false);
-    const [modalNumsState,modalNumsStateUpdate] = useState(false);
+    const [modalState, modalStateUpdate] = useState(false);
+    const [modalNumsState, modalNumsStateUpdate] = useState(false);
     const status_vc = { "correct": "Верно", "incorrect": "Неверно", "partly": "Частично верно", "waiting": "Проверяется..." }
 
     /* function findAnswer(number: Number){
@@ -201,27 +202,27 @@ export default function Page({ params }: { params: { id: string } }) {
     }
 
     return <div className={styles.workspace}>
-        <Modal opened={modalState} changeOpened={modalStateUpdate} options={{header:true, title: "Модальное окно"}}>
-            <p style={{width: "100%", textAlign: "center", display: "block", marginBottom: "2rem"}}>Вы уверены, что хотите завершить тест?</p>
+        <Modal opened={modalState} changeOpened={modalStateUpdate} options={{ header: true, title: "Модальное окно" }}>
+            <p style={{ width: "100%", textAlign: "center", display: "block", marginBottom: "2rem" }}>Вы уверены, что хотите завершить тест?</p>
             <div className={styles.buttons}>
                 <button className={styles.button}>Завершить</button>
-                <button onClick={()=>(modalStateUpdate(false))} className={parseClass([styles.button, styles.button_secondary])}>Продолжить</button>
+                <button onClick={() => (modalStateUpdate(false))} className={parseClass([styles.button, styles.button_secondary])}>Продолжить</button>
             </div>
         </Modal>
-        <Modal opened={modalNumsState} changeOpened={modalNumsStateUpdate} options={{header:false}}>
-        <div className={styles.tasksModalBar}>
-        {tasks.map(task => (
-                <div onClick={e => { current_task_update(findTask(task.number)) }} key={task.number} className={parseClass(
-                    [
-                        styles.tasksBar_cell,
-                        [styles.tasksBar_cell_valid, (answer.find((a) => (a.number == task.number))).status == "correct"],
-                        [styles.tasksBar_cell_invalid, (answer.find((a) => (a.number == task.number))).status == "incorrect"],
-                        [styles.tasksBar_cell_partly, (answer.find((a) => (a.number == task.number))).status == "partly"],
-                        [styles.tasksBar_cell_waiting, (answer.find((a) => (a.number == task.number))).status == "waiting"],
-                        [styles.tasksBar_cell_active, task.number == current_task.number],
+        <Modal opened={modalNumsState} changeOpened={modalNumsStateUpdate} options={{ header: false }}>
+            <div className={styles.tasksModalBar}>
+                {tasks.map(task => (
+                    <div onClick={e => { current_task_update(findTask(task.number)) }} key={task.number} className={parseClass(
+                        [
+                            styles.tasksBar_cell,
+                            [styles.tasksBar_cell_valid, (answer.find((a) => (a.number == task.number))).status == "correct"],
+                            [styles.tasksBar_cell_invalid, (answer.find((a) => (a.number == task.number))).status == "incorrect"],
+                            [styles.tasksBar_cell_partly, (answer.find((a) => (a.number == task.number))).status == "partly"],
+                            [styles.tasksBar_cell_waiting, (answer.find((a) => (a.number == task.number))).status == "waiting"],
+                            [styles.tasksBar_cell_active, task.number == current_task.number],
 
-                    ])}>{task.number}</div>
-            ))}
+                        ])}>{task.number}</div>
+                ))}
             </div>
         </Modal>
         <div className={styles.tasksBar}>
@@ -237,7 +238,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
                     ])}>{task.number}</div>
             ))}
-            <div onClick={()=>(modalStateUpdate(true))} className={parseClass([styles.tasksBar_cell, styles.tasksBar_cell_finish])}><ArrowIcon width="20px" height="20px" /></div>
+            <div onClick={() => (modalStateUpdate(true))} className={parseClass([styles.tasksBar_cell, styles.tasksBar_cell_finish])}><ArrowIcon width="20px" height="20px" /></div>
         </div>
 
         <div className={styles.taskArea}>
@@ -261,10 +262,12 @@ export default function Page({ params }: { params: { id: string } }) {
 
 
             {current_task.type == "input" && (
-                <div className={styles.answerArea}>
-                    <input key={current_task.number} defaultValue={(answer.find((a) => a.number == current_task?.number)).content} type="text" onInput={(e) => updateAnswerInput((e.target as HTMLInputElement).value)} className={styles.answerArea_input + ' ' + styles.answerArea_input_empty} />
-                    <div className={styles.answerArea_placeholder}>Запишите ответ</div>
-                </div>
+                <>
+                    <div className={styles.answerArea}>
+                        <input key={current_task.number} defaultValue={(answer.find((a) => a.number == current_task?.number)).content} type="text" onInput={(e) => updateAnswerInput((e.target as HTMLInputElement).value)} className={styles.answerArea_input + ' ' + styles.answerArea_input_empty} />
+                        <div className={styles.answerArea_placeholder}>Запишите ответ</div>
+                    </div><Input key={"input/"+current_task.number} value={(answer.find((a) => a.number == current_task?.number)).content} type="text" onChange={(e) => updateAnswerInput((e.target as HTMLInputElement).value)} placeholder={"Запишите ответ"} />
+                </>
             )}
 
             {current_task?.type == "check" && (
@@ -319,8 +322,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
             {current_task?.type != "code" && (<div className={styles.taskArea_buttons}>
                 <>
-                    <button key={"test_button_"+current_task.number} className={parseClass([styles.button, [styles.button_disabled, compareWithPrev((answer[current_task?.number - 1].content), (answerSaved[current_task?.number - 1].content))]])} onClick={(e) => updateTask(current_task?.number)}>{(compareWithPrev(answer[current_task?.number - 1].content, answerSaved[current_task?.number - 1].content) ? "Сохранено" : "Сохранить")}</button>
-                    <button key={"test_button_sec_"+current_task.number}  onClick={ () => (current_task_update(findTask(current_task.number+1))) } className={parseClass([styles.button, styles.button_secondary])}>Далее</button>
+                    <button key={"test_button_" + current_task.number} className={parseClass([styles.button, [styles.button_disabled, compareWithPrev((answer[current_task?.number - 1].content), (answerSaved[current_task?.number - 1].content))]])} onClick={(e) => updateTask(current_task?.number)}>{(compareWithPrev(answer[current_task?.number - 1].content, answerSaved[current_task?.number - 1].content) ? "Сохранено" : "Сохранить")}</button>
+                    <button key={"test_button_sec_" + current_task.number} onClick={() => (current_task_update(findTask(current_task.number + 1)))} className={parseClass([styles.button, styles.button_secondary])}>Далее</button>
                 </>
 
             </div>)}

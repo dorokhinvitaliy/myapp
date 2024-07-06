@@ -1,9 +1,9 @@
 import styles from "./button.module.css";
-import {parseClass} from "@/app/utils/parseClass";
-export default function Button(props){
-    return <button className={ parseClass([styles.button, [styles.button_secondary, props.secondary], [styles.button_disabled, props.disabled], props.className]) }>{ props.children }</button>;
+import {ParseClass, parseClass} from "@/app/utils/parseClass";
+export default function Button({secondary, disabled, large, className, children, ...props}:{secondary?:any, disabled?: any, large?: any, className?: any, children: any, props?: any}){
+    return <button className={ parseClass([styles.button, [styles.button_secondary, secondary], [styles.button_large, large], [styles.button_disabled, disabled], className||""]) } {...props}>{ children }</button>;
 }
 
-export function ButtonGroup({children}){
-    return <div className={styles.buttons}>{children}</div>;
+export function ButtonGroup({children, className, ...props}:{children: any, className?: any }){
+    return <div className={parseClass([styles.buttons, className])} {...props}>{children}</div>;
 }

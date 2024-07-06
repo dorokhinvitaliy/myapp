@@ -1,5 +1,6 @@
 .button {
     width: fit-content;
+    height: fit-content;
     background-color: #0D5FFF;
     padding: .5rem 1rem;
     color: #fff;
@@ -10,11 +11,13 @@
     -webkit-user-select: none;
 }
 
+.button.button_large {
+    padding: 1rem 2rem;
+}
+
 .button:hover {
     background-color: #0d5effd5;
-    padding: .5rem 1rem;
     color: #fff;
-    border-radius: .5rem;
 }
 
 .button_secondary {
@@ -35,6 +38,7 @@
     display: flex;
     width: fit-content;
     margin: 1rem auto 0;
+    align-items: center;
 }
 
 .button.button_disabled {

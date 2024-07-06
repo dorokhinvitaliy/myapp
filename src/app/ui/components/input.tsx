@@ -3,39 +3,41 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./input.module.css"
 import { parseClass } from "@/app/utils/parseClass";
 
-export function Input(props) {
+export function Input({placeholder, dataType, onChange, value, className, status, ...props}: {placeholder: string, dataType?: string, onChange: any, status?: "valid"|"invalid", value: any, className?: any}) {
     const legend_placeholder = useRef(null);
-    const placeholder = useRef(null);
+    const placeholder_ck = useRef(null);
     const [focused, changeFocused] = useState(false);
-    const [empty, changeEmpty] = useState(props.value == undefined || props.value == "");
+    const [empty, changeEmpty] = useState(value == undefined || value == "");
     const [width, setWidth] = useState(0);
+    const [onLoadAppear, onLoadAppearUpd] = useState(true);
 
 
     function sendValid(e){
-        if (props.dataType == undefined){
-            props.onchange(e.target.value);
-        }else if(props.dataType == "number"){
+        if (dataType == undefined){
+            onChange(e);
+        }else if(dataType == "number"){
             console.log(e);
             if (!isNaN(Number(e.target.value))){
-                props.onchange(e.target.value);
+                onChange(e);
             }else{
                 e.preventDefault();
             }
-        }else if(props.dataType == "mail"){
+        }else if(dataType == "mail"){
             
         }
     }
 
     useEffect(() => {
-        setWidth(placeholder.current.clientWidth);
+        setWidth(placeholder_ck.current.clientWidth);
+        setTimeout(()=>{ onLoadAppearUpd(false) } ,1000);
     });
 
-    return <div style={{ width: props.width }} className={parseClass([styles.inputBox, [styles.inputBox_focused, focused], [styles.inputBox_empty, empty]])}>
+    return <div className={parseClass([styles.inputBox, [styles.inputBox_focused, focused], [styles.inputBox_empty, empty], [styles.inputBox_valid, status=="valid"]])}>
         <fieldset className={styles.inputBox_field}>
-            <legend style={{ width: ((focused || (!empty)) ? width : 0), marginLeft: `calc(0.5rem + ${width / 2}px)` }} ref={legend_placeholder} className={styles.inputBox_field_legend}>&nbsp;</legend>
-            <div className={styles.inputBox_field_placeholder}> {props.placeholder} </div>
-            <div ref={placeholder} className={styles.inputBox_placeholderSkeleton}>{props.placeholder}</div>
-            <input value={props.value} onChange={(e) => { sendValid(e);changeEmpty(e.target.value == "") }} onBlur={() => changeFocused(false)} onFocus={() => changeFocused(true)} className={styles.inputBox_field_input} type="text" />
+            <legend style={{ width: ((focused || (!empty)) ? width : 0), marginLeft: `calc(0.5rem + ${width / 2}px)` }} ref={legend_placeholder} className={parseClass([styles.inputBox_field_legend])}>&nbsp;</legend>
+            <div className={parseClass([styles.inputBox_field_placeholder, [styles.appear_animation_delay, onLoadAppear]])}>{placeholder}</div>
+            <div ref={placeholder_ck} className={styles.inputBox_placeholderSkeleton}>{placeholder}</div>
+            <input value={value} onChange={(e) => { sendValid(e);changeEmpty(e.target.value == "") }} onBlur={() => changeFocused(false)} onFocus={() => changeFocused(true)} className={parseClass([styles.inputBox_field_input, className || ""])} type="text" { ...props} />
         </fieldset>
 
     </div>;
@@ -47,7 +49,7 @@ export function InputGroup({ children }) {
     </div>;
 }
 
-export function SelectBox({ options, placeholder, value, changeValue }) {
+export function SelectBox({ options, placeholder, value, onChange }) {
     const placeholder_sk = useRef<HTMLInputElement>(null);
     const [focused, changeFocused] = useState(false);
     const [empty, changeEmpty] = useState(value == null);
@@ -70,7 +72,7 @@ export function SelectBox({ options, placeholder, value, changeValue }) {
             <div className={styles.inputBox_field_list}>
                 {
                     options.map((option) => (
-                        <div key={option.id} onClick={()=>{changeValue(option.id); changeEmpty(false); changeFocused(false)}} className={parseClass([styles.inputBox_field_list_option, [styles.inputBox_field_list_option_checked, value==option.id]])}>{option.label}</div>
+                        <div key={option.id} onClick={()=>{onChange(option.id); changeEmpty(false); changeFocused(false)}} className={parseClass([styles.inputBox_field_list_option, [styles.inputBox_field_list_option_checked, value==option.id]])}>{option.label}</div>
                     ))
                 }
             </div>

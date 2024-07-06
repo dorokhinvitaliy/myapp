@@ -9,5 +9,15 @@ export function parseClass(cls) {
             result += cls[i] + " ";
         }
     }
-    return result;
+    return (result).trim();
+}
+
+export function ParseClass(cls) {
+    var result = "";
+    for(var key in cls){
+        if(cls[key]){
+            result+=key+" "
+        }
+    }
+    return (result).trim();
 }

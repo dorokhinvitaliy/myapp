@@ -6,6 +6,13 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+
+  --dark-blue: #1e55c4;
+  --diffused-dark-blue: #1e55c455;
+  --blue: #0D5FFF;
+  --diffused-blue: #0d5effd5;
+  --secondary-blue: #0d5eff27;
+  --secondary-diffused-blue: #0d5eff51;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,7 +49,9 @@ body {
   margin: 0;
 }
 
-*, :before, :after {
+*,
+:before,
+:after {
   box-sizing: border-box;
 }
 
@@ -70,6 +79,6 @@ li {
 }
 
 .header-logo {
-  color: #0D5FFF;
+  color: var(--dark-blue);
   font-weight: 600;
 }
