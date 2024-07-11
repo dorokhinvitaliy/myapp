@@ -1,7 +1,7 @@
 'use client';
 import test from "node:test";
 import styles from "./styles.module.css"
-import { act, useReducer, useState } from "react";
+import { act, useReducer, useRef, useState } from "react";
 
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { parse } from "path";
@@ -9,8 +9,9 @@ import { parse } from "path";
 import SelectBox from "@/app/ui/tests/SelectBox";
 import { parseClass } from "@/app/utils/parseClass";
 import { ArrowIcon } from "@/app/ui/icons";
-import Modal from "@/app/ui/tests/Modal";
+import Modal, { ModalExit } from "@/app/ui/components/Modal";
 import { Input } from "@/app/ui/components/input";
+import Button from "@/app/ui/components/button";
 
 const tasks = [
     {
@@ -108,6 +109,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const [answerSaved, dispatchSaved] = useReducer(answerSavedReducer, structuredClone(initialAnswer));
     const [current_task, current_task_update] = useState(tasks[0]);
     const [modalState, modalStateUpdate] = useState(false);
+    const modalStateCloseButton = useRef(null);
     const [modalNumsState, modalNumsStateUpdate] = useState(false);
     const status_vc = { "correct": "Верно", "incorrect": "Неверно", "partly": "Частично верно", "waiting": "Проверяется..." }
 
@@ -202,11 +204,11 @@ export default function Page({ params }: { params: { id: string } }) {
     }
 
     return <div className={styles.workspace}>
-        <Modal opened={modalState} changeOpened={modalStateUpdate} options={{ header: true, title: "Модальное окно" }}>
+        <Modal opened={modalState} changeOpened={modalStateUpdate} options={{ header: true, title: "Модальное окно" }} closeRef={modalStateCloseButton}>
             <p style={{ width: "100%", textAlign: "center", display: "block", marginBottom: "2rem" }}>Вы уверены, что хотите завершить тест?</p>
             <div className={styles.buttons}>
                 <button className={styles.button}>Завершить</button>
-                <button onClick={() => (modalStateUpdate(false))} className={parseClass([styles.button, styles.button_secondary])}>Продолжить</button>
+                <button ref={modalStateCloseButton} className={parseClass([styles.button, styles.button_secondary])}>Продолжить</button>
             </div>
         </Modal>
         <Modal opened={modalNumsState} changeOpened={modalNumsStateUpdate} options={{ header: false }}>
@@ -263,10 +265,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
             {current_task.type == "input" && (
                 <>
-                    <div className={styles.answerArea}>
-                        <input key={current_task.number} defaultValue={(answer.find((a) => a.number == current_task?.number)).content} type="text" onInput={(e) => updateAnswerInput((e.target as HTMLInputElement).value)} className={styles.answerArea_input + ' ' + styles.answerArea_input_empty} />
-                        <div className={styles.answerArea_placeholder}>Запишите ответ</div>
-                    </div><Input key={"input/"+current_task.number} value={(answer.find((a) => a.number == current_task?.number)).content} type="text" onChange={(e) => updateAnswerInput((e.target as HTMLInputElement).value)} placeholder={"Запишите ответ"} />
+                    <Input key={"input/"+current_task.number} value={(answer.find((a) => a.number == current_task?.number)).content} type="text" onChange={(e) => updateAnswerInput((e.target as HTMLInputElement).value)} placeholder={"Запишите ответ"} />
                 </>
             )}
 
@@ -311,8 +310,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
                         />
                         <div className={parseClass([styles.taskArea_buttons, styles.codeArea_buttons])}>
-                            <button className={styles.button + " " + (compareWithPrev((answer[current_task?.number - 1].content), (answerSaved[current_task?.number - 1].content)) ? " " + styles.button_disabled : "")} onClick={(e) => updateTask(current_task?.number)}>{(compareWithPrev(answer[current_task?.number - 1].content, answerSaved[current_task?.number - 1].content) ? "Сохранено" : "Отправить на проверку")}</button>
-                            <button className={styles.button + " " + styles.button_secondary}>Загрузить файл</button>
+                        <Button key={"test_button_" + current_task.number} disabled={compareWithPrev((answer[current_task?.number - 1].content), (answerSaved[current_task?.number - 1].content))} onClick={(e) => updateTask(current_task?.number)}>{(compareWithPrev(answer[current_task?.number - 1].content, answerSaved[current_task?.number - 1].content) ? "Сохранено" : "Сохранить")}</Button>
+                        <Button secondary key={"test_button_sec_" + current_task.number} onClick={() => (current_task_update(findTask(current_task.number + 1)))}>Далее</Button>
                         </div>
                     </div>
                 </>
@@ -322,8 +321,8 @@ export default function Page({ params }: { params: { id: string } }) {
 
             {current_task?.type != "code" && (<div className={styles.taskArea_buttons}>
                 <>
-                    <button key={"test_button_" + current_task.number} className={parseClass([styles.button, [styles.button_disabled, compareWithPrev((answer[current_task?.number - 1].content), (answerSaved[current_task?.number - 1].content))]])} onClick={(e) => updateTask(current_task?.number)}>{(compareWithPrev(answer[current_task?.number - 1].content, answerSaved[current_task?.number - 1].content) ? "Сохранено" : "Сохранить")}</button>
-                    <button key={"test_button_sec_" + current_task.number} onClick={() => (current_task_update(findTask(current_task.number + 1)))} className={parseClass([styles.button, styles.button_secondary])}>Далее</button>
+                    <Button key={"test_button_" + current_task.number} disabled={compareWithPrev((answer[current_task?.number - 1].content), (answerSaved[current_task?.number - 1].content))} onClick={(e) => updateTask(current_task?.number)}>{(compareWithPrev(answer[current_task?.number - 1].content, answerSaved[current_task?.number - 1].content) ? "Сохранено" : "Сохранить")}</Button>
+                    <Button secondary key={"test_button_sec_" + current_task.number} onClick={() => (current_task_update(findTask(current_task.number + 1)))}>Далее</Button>
                 </>
 
             </div>)}

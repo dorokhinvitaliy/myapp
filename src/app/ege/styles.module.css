@@ -1,0 +1,69 @@
+.workspace {
+    max-width: 800px;
+    margin: 3rem auto;
+}
+
+@media screen and (max-width:calc(800px + 2rem)) {
+    .workspace {
+        max-width: calc(100% - 2rem);
+        margin: 3rem auto;
+    }
+}
+
+.contentBlock {
+    padding: 1rem;
+    border-radius: .5rem;
+    background-color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+.contentHeader {
+    margin: 1rem .5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.contentSpan {
+    display: flex;
+    margin: 1rem .5rem;
+}
+
+.contentSpan_title {
+    color: grey;
+}
+
+.contentSpan_value {
+    margin-left: 1rem;
+    color: var(--dark-blue);
+}
+
+.table_td, .table_th {
+    padding: .5rem;
+    border: 1px solid rgba(128, 128, 128, 0.202);
+    text-align: center;
+}
+
+.greenCell {
+    background-color: rgba(0, 128, 0, 0.118);
+    color: green;
+}
+
+.greyCell {
+    background-color: rgba(128, 128, 128, 0.168);
+    color: grey;
+}
+
+.stickyHeader {
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+}
+
+.selectedRow {
+    background-color: var(--diffused-dark-blue);
+    color: var(--dark-blue);
+}
+
+.redLine .table_td {
+    border-bottom: 3px solid red;
+}

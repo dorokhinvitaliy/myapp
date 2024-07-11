@@ -447,21 +447,21 @@
 .codeArea {
     position: relative;
     background-color: rgba(255, 255, 255, 0);
-    border-radius: 1rem;
+    border-radius: .5rem;
     padding: 1rem;
     outline: none;
     width: 100%;
-    border: 2px solid rgb(214, 214, 214);
+    border: 1px solid var(--grey);
     transition: .5s ease;
 }
 
 .codeArea_placeholder {
-    color: rgb(198, 198, 198);
+    color: var(--grey);
     font-size: 15px;
-    font-weight: 500;
+    font-weight: 400;
     position: absolute;
     top: -14px;
-    left: 20px;
+    left: 1rem;
     transition: all .5s ease;
     z-index: 100;
 }
@@ -470,12 +470,12 @@
     content: "";
     position: relative;
     display: block;
-    width: calc(100% + 2*4px);
+    width: calc(100% + 1rem);
     height: 2px;
     top: 12px;
     background: rgb(255, 255, 255);
     z-index: -1;
-    left: -4px;
+    left: -.5rem;
 }
 
 .codeArea_rightMenu {
@@ -518,11 +518,11 @@
 }
 
 .codeArea_focused {
-    border: 2px solid #0D5FFF;
+    border: 1px solid var(--dark-blue);
 }
 
 .codeArea_focused .codeArea_placeholder {
-    color: #0D5FFF;
+    color: var(--dark-blue);
 }
 
 .selectBox {

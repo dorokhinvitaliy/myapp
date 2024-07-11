@@ -1,7 +1,7 @@
 .button {
     width: fit-content;
     height: fit-content;
-    background-color: #0D5FFF;
+    background-color: var(--blue);
     padding: .5rem 1rem;
     color: #fff;
     border-radius: .5rem;
@@ -16,18 +16,18 @@
 }
 
 .button:hover {
-    background-color: #0d5effd5;
+    background-color: var(--diffused-blue);
     color: #fff;
 }
 
 .button_secondary {
-    background-color: #0d5eff27;
-    color: #0D5FFF;
+    background-color: var(--secondary-blue);
+    color: var(--blue);
 }
 
 .button_secondary:hover {
-    background-color: #0d5eff51;
-    color: #0D5FFF;
+    background-color: var(--secondary-diffused-blue);
+    color: var(--blue);
 }
 
 .button:not(:first-child){
@@ -42,7 +42,7 @@
 }
 
 .button.button_disabled {
-    background-color: #9c9c9c54;
-    color: #9c9c9c;
+    background-color: var(--secondary-grey);
+    color: var(--grey);
     pointer-events: none;
 }

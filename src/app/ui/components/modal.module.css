@@ -1,6 +1,6 @@
 .modalArea {
     z-index: 10000;
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
@@ -11,10 +11,14 @@
     transition: all .3s ease;
 }
 
-.modalArea_closed {
+.bodyLocked {
+    overflow: hidden;
+}
+
+/* .modalArea_closed {
     user-select: none;
     pointer-events: none;
-}
+} */
 
 .modalBackdrop {
     background-color: rgba(0, 0, 0, 0.101);
@@ -27,15 +31,16 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     transition: all .2s ease;
+    animation: enterModalBackdrop .2s ease;
 }
 
-.modalArea_closed .modalBackdrop {
+/* .modalArea_closed .modalBackdrop {
     opacity: 0;
-}
+} */
 
-.modalArea_closed .modalBlock {
+/* .modalArea_closed .modalBlock {
     opacity: 0;
-}
+} */
 
 .modalBlock {
     width: 500px;
@@ -44,11 +49,20 @@
     border-radius: 1rem;
     transform: scale(1);
     transition: all .3s ease;
+    animation: enterModal .3s ease;
 }
 
 .modalArea_closed .modalBlock {
-    transform: scale(0);
+    animation: leaveModal .3s ease forwards;
 }
+
+.modalArea_closed .modalBackdrop {
+    animation: leaveModalBackdrop .2s ease forwards;
+}
+
+/* .modalArea_closed .modalBlock {
+    transform: scale(0);
+} */
 
 .modalBlock_header {
     padding: 2rem 2rem 0;
@@ -72,3 +86,29 @@
     padding: 2rem;
 }
 
+
+@keyframes enterModal {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+@keyframes enterModalBackdrop {
+    0% {
+        opacity: 0;
+    }
+}
+
+@keyframes leaveModal {
+    100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+}
+
+@keyframes leaveModalBackdrop {
+    100% {
+        opacity: 0;
+    }
+}

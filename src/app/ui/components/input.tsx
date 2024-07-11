@@ -3,22 +3,22 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./input.module.css"
 import { parseClass } from "@/app/utils/parseClass";
 
-export function Input({placeholder, dataType, onChange, value, className, status, ...props}: {placeholder: string, dataType?: string, onChange: any, status?: "valid"|"invalid", value: any, className?: any}) {
+export function Input({placeholder, dataType, onChange, value, defaultValue, className, status, ...props}: {placeholder: string, dataType?: string, onChange?: any, status?: "valid"|"invalid", value?: any, defaultValue?: any, className?: any}) {
     const legend_placeholder = useRef(null);
     const placeholder_ck = useRef(null);
     const [focused, changeFocused] = useState(false);
     const [empty, changeEmpty] = useState(value == undefined || value == "");
-    const [width, setWidth] = useState(0);
-    const [onLoadAppear, onLoadAppearUpd] = useState(true);
-
+    const [width, setWidth] = useState(null);
+    
+    const [killSkeleton, updateKillSkeleton] = useState(false);
 
     function sendValid(e){
         if (dataType == undefined){
-            onChange(e);
+            if (onChange) onChange(e);
         }else if(dataType == "number"){
             console.log(e);
             if (!isNaN(Number(e.target.value))){
-                onChange(e);
+                if (onChange) onChange(e);
             }else{
                 e.preventDefault();
             }
@@ -29,14 +29,14 @@ export function Input({placeholder, dataType, onChange, value, className, status
 
     useEffect(() => {
         setWidth(placeholder_ck.current.clientWidth);
-        setTimeout(()=>{ onLoadAppearUpd(false) } ,1000);
-    });
+        setTimeout(()=>{updateKillSkeleton(true)}, 0);
+    },[]);
 
     return <div className={parseClass([styles.inputBox, [styles.inputBox_focused, focused], [styles.inputBox_empty, empty], [styles.inputBox_valid, status=="valid"]])}>
         <fieldset className={styles.inputBox_field}>
-            <legend style={{ width: ((focused || (!empty)) ? width : 0), marginLeft: `calc(0.5rem + ${width / 2}px)` }} ref={legend_placeholder} className={parseClass([styles.inputBox_field_legend])}>&nbsp;</legend>
-            <div className={parseClass([styles.inputBox_field_placeholder, [styles.appear_animation_delay, onLoadAppear]])}>{placeholder}</div>
-            <div ref={placeholder_ck} className={styles.inputBox_placeholderSkeleton}>{placeholder}</div>
+            <legend style={{ width: width || "unset", marginLeft: `calc(0.5rem + ${width / 2}px)`, padding: ((empty && !focused ) ? "0" : (killSkeleton ? 0 : "0 .5rem")) }} ref={legend_placeholder} className={parseClass([styles.inputBox_field_legend])}>{killSkeleton ? placeholder : placeholder}</legend>
+            <div className={parseClass([styles.inputBox_field_placeholder])}>{placeholder}</div>
+            { !killSkeleton && (<div ref={placeholder_ck} className={styles.inputBox_placeholderSkeleton}>{placeholder}</div>)}
             <input value={value} onChange={(e) => { sendValid(e);changeEmpty(e.target.value == "") }} onBlur={() => changeFocused(false)} onFocus={() => changeFocused(true)} className={parseClass([styles.inputBox_field_input, className || ""])} type="text" { ...props} />
         </fieldset>
 

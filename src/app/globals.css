@@ -13,6 +13,8 @@
   --diffused-blue: #0d5effd5;
   --secondary-blue: #0d5eff27;
   --secondary-diffused-blue: #0d5eff51;
+  --grey: #9c9c9c;
+  --secondary-grey: #9c9c9c54;
 }
 
 @media (prefers-color-scheme: dark) {
