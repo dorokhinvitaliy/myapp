@@ -32,6 +32,11 @@
     color: grey;
 }
 
+.contentSpan_title_info {
+    font-style: italic;
+    font-size: .9rem;
+}
+
 .contentSpan_value {
     margin-left: 1rem;
     color: var(--dark-blue);
@@ -41,6 +46,10 @@
     padding: .5rem;
     border: 1px solid rgba(128, 128, 128, 0.202);
     text-align: center;
+}
+
+.table_th {
+    background-color: #f5f5f5;
 }
 
 .greenCell {
@@ -59,6 +68,18 @@
     top: 0;
 }
 
+.stickyHeader:before{
+    content: "";
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:#e5e5e5;
+    z-index: -1;
+}
+
 .selectedRow {
     background-color: var(--diffused-dark-blue);
     color: var(--dark-blue);
@@ -66,4 +87,102 @@
 
 .redLine .table_td {
     border-bottom: 3px solid red;
+}
+
+.contentPlaceholder {
+    background-color: currentColor;
+    opacity: .1;
+}
+
+
+.contentPlaceholder_sx {
+    width: 30px;
+}
+.contentPlaceholder_sy {
+    width: 45px;
+}
+
+.contentPlaceholder_lx {
+    width: 200px;
+}
+.contentPlaceholder_ly {
+    width: 250px;
+}
+
+.scrolled {
+    animation: pulstr 1.5s ease infinite;
+}
+
+@keyframes pulstr {
+    0% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.nTable tr:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f9f9f9;
+    z-index: -1;
+    border-radius: .5rem;
+}
+
+.nTable tbody tr {
+    cursor: pointer;
+}
+
+.nTable tbody tr:before {
+    transition: all .5s ease;
+}
+
+.nTable tbody tr:hover:before {
+    background: #f8f8f8;
+}
+
+.nTable tr {
+    position: relative;
+    z-index: 2;
+}
+
+.nTable thead tr:before {
+    z-index: -1;
+    background-color: #efefef;
+}
+
+
+.nTable {
+    border-collapse: separate;
+    border-spacing: 4px 10px;
+    width: 100%;
+}
+
+.nTbale td,.nTable th {
+    border: none!important;
+}
+
+.nTable td, .nTable th {
+    padding: 1rem!important;
+    text-align: left;
+}
+
+.nTable th {
+    font-weight: 500;
+}
+
+/* .nTable .td_centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+.nTable td svg {
+    display: inline-block;
 }

@@ -84,3 +84,46 @@ li {
   color: var(--dark-blue);
   font-weight: 600;
 }
+
+/* 
+
+tr:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #f9f9f9;
+    z-index: -1;
+    border-radius: .5rem;
+}
+
+tbody tr {
+    position: relative;
+    z-index: 2;
+}
+
+thead tr:before {
+    z-index: -1;
+    background-color: #efefef;
+}
+
+thead tr {
+    z-index: 1;
+}
+
+thead {
+    z-index: 5;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 4px 10px;
+}
+
+td,th {
+    border: none!important;
+}
+*/

@@ -114,6 +114,7 @@
 
 .selectBox .inputBox_field_list {
     background-color: #fff;
+    z-index: 1;
     border: 1px solid var(--secondary-grey);
     right: 0;
     left: 0;

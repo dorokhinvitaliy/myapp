@@ -1,0 +1,44 @@
+.customTable {
+    /*  */
+}
+.customTableHeader {
+    /*  */
+}
+.customTableBody {
+    /*  */
+}
+
+.customTableHeader .customTableRow {
+    background-color: rgba(0, 0, 0, 0.062);
+    font-weight: 500;
+}
+
+/* .customTableHeader .customTableRow:hover {
+    background-color: rgba(0, 0, 0, 0.168);
+} */
+
+.customTableRow {
+    display: flex;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.023);
+    border-radius: .5rem;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.customTableRow:hover {
+    background-color: rgba(0, 0, 0, 0.072);
+}
+
+.customTableRow:first-child, .customTableRow:not(:last-child){
+    margin-bottom: .5rem;
+}
+.customTableCell {
+    padding: 1rem;
+}
+
+.customTableCell_centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
