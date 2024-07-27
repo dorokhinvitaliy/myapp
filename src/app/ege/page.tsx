@@ -46,6 +46,7 @@ export default function Page() {
         axios.post(apiUrl,
             {
                 vuz: data.selected_v,
+                
                 napr: data.selected_p,
                 prior: data.prior_limit,
                 attestat: data.orig_a
@@ -60,6 +61,8 @@ export default function Page() {
                 updRows(rows_t);
                 changeLoading("loaded");
             }).catch(function (error) {
+                updRows(null);
+                changeLoading("loaded");
                 updLoadError(true);
                 if (error.response) {
                   // The request was made and the server responded with a status code
@@ -231,7 +234,7 @@ export default function Page() {
             <H>Произошла ошибка, попробуйте обновить данные</H>
             <ButtonGroup>
                 
-                    <Button disabled={upRows} onClick={()=>(updateLoad())} secondary>{upRows ? "Обновление..." : "Обновить данные"}</Button>
+                    <Button disabled={upRows} onClick={()=>(updateLoad())}>{upRows ? "Обновление..." : "Обновить данные"}</Button>
                 
             </ButtonGroup>
         </ContentBlock>) }
